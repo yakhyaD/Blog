@@ -4,7 +4,7 @@ namespace App\Table;
 use App\Table\Exception\NotFoundException;
 use \PDO;
 
-class Table {
+abstract class Table {
 
     protected $pdo;
     protected $table = null;
