@@ -22,8 +22,8 @@ abstract class Table {
     }
     public function find(int $id)
     {
-        $query = $this->pdo->prepare('SELECT * FROM $this->table WHERE id = :id');
-        $query->execute(['id' => $id]);
+        $query = $this->pdo->prepare('SELECT * FROM ' . $this->table . ' WHERE id = :id');
+        $query->execute(['id'=> $id]);
         $query->setFetchMode(PDO::FETCH_CLASS, $this->class);
         $result = $query->fetch();
         if ($result === false){

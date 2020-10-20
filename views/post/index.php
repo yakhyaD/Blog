@@ -11,7 +11,7 @@ use App\URL;
 $pdo = Connection::getPDO();
 
 // Pagination
-[$posts, $paginatedQuery] = (new PostTable($pdo))->findPaginated();
+[$posts, $pagination] = (new PostTable($pdo))->findPaginated();
 
 $link = $router->url('home');
 $title = "Mon blog"
@@ -28,6 +28,6 @@ $title = "Mon blog"
 
 
 <div class="d-flex justify-content-between my-4">
-    <?= $paginatedQuery->previousLink($link) ?>
-    <?= $paginatedQuery->nextLink($link) ?>    
+    <?= $pagination->previousLink($link) ?>
+    <?= $pagination->nextLink($link) ?>    
 </div>
