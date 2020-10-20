@@ -61,4 +61,16 @@ class Post {
         $this->categories[] = $category;
         $category->setPost($this);
     }
+
+    public function setName(string $name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function setContent(string $content)
+    {
+        $this->content = $content;
+        return $this;
+    }
 }

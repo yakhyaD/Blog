@@ -27,7 +27,6 @@ $link = $router->url('admin_posts');
         <tr>
             <td>#<?= $post->getID() ?></td>
             <td><?= $post->getName() ?></td>
-            <td></td>
             <td>
                 <a href="<?= $router->url('admin_post_edit', ['id' => $post->getID()]) ?>" class="btn btn-primary">Edit</a>
                 <form action="<?= $router->url('admin_post_delete', ['id' => $post->getID()]) ?>" method="POST" style="display: inline;">

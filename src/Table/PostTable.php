@@ -18,6 +18,19 @@ class PostTable extends Table{
             throw new \Exception('This record from ' . $this->table . ' with id: ' . $id . 'table cannot be deleted ');
         }
     }
+    public function update(Post $post)
+    {
+        $query = $this->pdo->prepare('UPDATE' . $this->table . 'SET name= :name, content= :content' . ' WHERE id = :id' );
+        $result = $query->execute([
+            'name' => $post->getName(),
+            'content' => $post->getContent(),
+            'id' => $post->getID()
+        ]);
+        if($result === false){
+            throw new \Exception('This record from ' . $this->table . ' with id: ' .  $post->getID() . 'table cannot be edited ');
+        }
+    }
+    
 
     public function findPaginated(): array
     {
