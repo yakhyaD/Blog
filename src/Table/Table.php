@@ -31,4 +31,17 @@ abstract class Table {
         }
         return $result;
     }
+
+    public function exist (string $field, $value, ?int $except = null): bool
+    {
+        $sql = "SELECT COUNT(id) FROM {$this->table} WHERE {$field}= ?";
+        $params = [$value];
+        if($except !== null){
+            $sql .= " AND id != ?"; 
+            $params[] = $except;
+        }
+        $query = $this->pdo->prepare($sql);
+        $query->execute($params);
+        return $query->fetch(PDO::FETCH_NUM)[0] > 0;
+    }
 }

@@ -64,13 +64,29 @@ class Post {
 
     public function setName(string $name)
     {
-        $this->name = $name;
+        $this->name = htmlentities($name);
         return $this;
     }
 
     public function setContent(string $content)
     {
-        $this->content = $content;
+        $this->content = nl2br(htmlentities($content));
+        return $this;
+    }
+    public function setSlug(string $slug)
+    {
+        $this->slug = htmlentities($slug);
+        return $this;
+    }
+    public function setCreatedAt(string $created_at)
+    {
+        $this->created_at = $created_at;
+        return $this;
+    }
+
+    public function setID(int $id): self
+    {
+        $this->id = $id;
         return $this;
     }
 }

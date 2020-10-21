@@ -3,7 +3,6 @@ namespace App\Table;
 use \PDO;
 use App\PaginatedQuery;
 use App\Model\Post;
-use App\Model\Category;
 
 class PostTable extends Table{
     
@@ -20,15 +19,32 @@ class PostTable extends Table{
     }
     public function update(Post $post)
     {
-        $query = $this->pdo->prepare('UPDATE' . $this->table . 'SET name= :name, content= :content' . ' WHERE id = :id' );
+        $query = $this->pdo->prepare("UPDATE  {$this->table} SET name = :name, slug= :slug, content= :content ,created_at= :createdAt   WHERE id = :id");
         $result = $query->execute([
             'name' => $post->getName(),
+            'slug' => $post->getSlug(),
             'content' => $post->getContent(),
-            'id' => $post->getID()
+            'createdAt' => $post->getCreatedAt()->format('Y-m-d H:m:s'),
+            'id' => $post->getID(),
         ]);
         if($result === false){
             throw new \Exception('This record from ' . $this->table . ' with id: ' .  $post->getID() . 'table cannot be edited ');
         }
+    }
+
+    public function insert(Post $post)
+    {
+        $query = $this->pdo->prepare("INSERT INTO  {$this->table} SET name = :name, slug= :slug, content= :content ,created_at= :createdAt   WHERE id = :id");
+        $result = $query->execute([
+            'name' => $post['name'],
+            'slug' => $post['slug'],
+            'content' => $post-['content'],
+            'createdAt' => $post['createdAt'],
+        ]);
+        if($result === false){
+            throw new \Exception('Impossible to create new record in table' . $this->table  );
+        }
+        $post->setID($this->pdo->lastInsertId());
     }
     
 
