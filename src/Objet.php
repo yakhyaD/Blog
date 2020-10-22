@@ -1,20 +1,18 @@
 <?php
 namespace App;
 
-use App\Model\Post;
 
 class Objet {
 
-    public static function hydrate(Post $post, $data, $fields)
+    public static function hydrate( $table, $data, $fields)
     {
         if(!is_array($fields)){
             $set = 'set' . ucfirst($fields);
-            $post->$set($data[$fields]);
+            $table->$set($data[$fields]);
         }
         foreach($fields as $field){
             $set = 'set' . ucfirst($field);
-            
-            $post->$set($data[$field]);
+            $table->$set($data[$field]);
         }
     }
 }

@@ -3,24 +3,25 @@
 use App\Auth;
 use App\Connection;
 use App\HTML\Form;
-use App\Table\PostTable;
 use App\Validator;
 use App\Validator\PostValidator;
 use App\Objet;
+use App\Table\CategoryTable;
+use App\Validator\CategoryValidator;
 
 $pdo = Connection::getPDO();
 Auth::check();
-$postTable = new PostTable($pdo);
-$post = $postTable->find($params['id']);
+$categoryTable = new CategoryTable($pdo);
+$item = $categoryTable->find($params['id']);
 
 $errors = [];
 $success = false;
 
 if(!empty($_POST)){
-    $table = new PostValidator($_POST, $postTable, $post->getID());
-    Objet::hydrate($post, $_POST, ['name', 'content', 'slug', 'created']);
+    $table = new CategoryValidator($_POST, $categoryTable, $item->getID());
+    Objet::hydrate($item, $_POST, ['name','slug']);
     if($table->validate()){
-        $postTable->updatePost($post);
+        $categoryTable->updateCategory($item);
         $success = true;
     }
     else{
@@ -28,10 +29,10 @@ if(!empty($_POST)){
     }
 }
 
-$form = new Form($post, $errors);
+$form = new Form($item, $errors);
 ?>
 
-<?php if($success === true): ?>
+<?php if($success): ?>
     <div class="alert alert-success">
         Record edited !!
     </div>
@@ -44,5 +45,5 @@ $form = new Form($post, $errors);
 <?php endif; ?>
 
 
-<h1 class="mb-4">Edit the article: <?= $post->getName() ?></h1>
+<h1 class="mb-4">Edit the category: <?= $item->getName() ?></h1>
 <?php require '_form.php' ?>

@@ -9,42 +9,25 @@ class PostTable extends Table{
     protected $table = 'posts';
     protected $class = Post::class;
 
-    public function delete(int $id)
+    public function updatePost(Post $post)
     {
-        $query = $this->pdo->prepare('DELETE FROM ' . $this->table . ' WHERE id = ?' );
-        $result = $query->execute([$id]);
-        if($result === false){
-            throw new \Exception('This record from ' . $this->table . ' with id: ' . $id . 'table cannot be deleted ');
-        }
-    }
-    public function update(Post $post)
-    {
-        $query = $this->pdo->prepare("UPDATE  {$this->table} SET name = :name, slug= :slug, content= :content ,created_at= :createdAt   WHERE id = :id");
-        $result = $query->execute([
+        $this->update([
             'name' => $post->getName(),
             'slug' => $post->getSlug(),
             'content' => $post->getContent(),
-            'createdAt' => $post->getCreatedAt()->format('Y-m-d H:m:s'),
-            'id' => $post->getID(),
-        ]);
-        if($result === false){
-            throw new \Exception('This record from ' . $this->table . ' with id: ' .  $post->getID() . 'table cannot be edited ');
-        }
+            'created_at' => $post->getCreated()->format('Y-m-d H:m:s'),
+        ], $post->getID());
     }
 
-    public function insert(Post $post)
+    public function insertPost(Post $post): void
     {
-        $query = $this->pdo->prepare("INSERT INTO  {$this->table} SET name = :name, slug= :slug, content= :content ,created_at= :createdAt   WHERE id = :id");
-        $result = $query->execute([
-            'name' => $post['name'],
-            'slug' => $post['slug'],
-            'content' => $post-['content'],
-            'createdAt' => $post['createdAt'],
+        $id = $this->insert([
+            'name' => $post->getName(),
+            'slug' => $post->getSlug(),
+            'content' => $post->getContent(),
+            'created_at' => $post->getCreated()->format('Y-m-d H:i:s')
         ]);
-        if($result === false){
-            throw new \Exception('Impossible to create new record in table' . $this->table  );
-        }
-        $post->setID($this->pdo->lastInsertId());
+        $post->setID($id);
     }
     
 

@@ -20,7 +20,7 @@ HTML;
 <div class="card">
     <div class="card-body">
         <h1 class="card-title"><?= $post->getName() ?></h1>
-        <p class="text-muted"><?= $post->getCreatedAt()->format('d F Y') ?>
+        <p class="text-muted"><?= $post->getCreated()->format('d F Y') ?>
             <?php if(!empty($post->getCategories())) : ?> 
             ::
             <?= implode(', ', $categories) ?> 

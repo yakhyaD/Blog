@@ -16,30 +16,28 @@ $errors = [];
 $success = false;
 $post = new Post();
 
-
-if(!empty($_POST)){
-    
+if(!empty($_POST)){    
     $pdo = Connection::getPDO();
-    // $postTable = new PostTable($pdo);
+    $postTable = new PostTable($pdo);
 
-    // $table = new PostValidator($_POST, $postTable, $post->getID());
-    // dd($table);
-    // Objet::hydrate($post, $_POST, ['name', 'content', 'slug', 'createdAt']);
-    // if($table->validate()){
-    //     $postTable->insert($post);
-    //     header('location:' . $router->url('admin_post_edit'), ['id' => $post->getID()] . '?created=1');
-    // }
-    // else{
-    //     $errors= $table->errors();
-    // }
+    $table = new PostValidator($_POST, $postTable, $post->getID());
+    Objet::hydrate($post, $_POST, ['name', 'content', 'slug', 'created']);
+    if($table->validate()){
+        $postTable->insertPost($post);
+        header('location:' . $router->url('admin_posts',['id' => $post->getID()]) . '?success=1');
+        exit();
+    }
+    else{
+        $errors= $table->errors();
+    }
 }
 
 $form = new Form($post, $errors);
 ?>
 
-<?php if($success === true): ?>
+<?php if(isset($_POST['succes'])): ?>
     <div class="alert alert-success">
-        Record edited !!
+        Record Created !!
     </div>
 <?php endif; ?>
 
@@ -51,10 +49,4 @@ $form = new Form($post, $errors);
 
 
 <h1 class="mb-4">New Article</h1>
-<form action="" method="POST">
-    <?= $form->input('name', 'Name') ?>
-    <?= $form->input('slug', 'URL') ?>
-    <?= $form->input('createdAt', 'Created At') ?>
-    <?= $form->textarea('content', 'Content') ?>
-    <button class="btn btn-primary">Create</button>
-</form>
+<?php require '_form.php' ?>

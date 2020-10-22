@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <title><?= $title ?? 'My blog '?></title>
     <style>
-       * {
+        * {
             margin: 0;
             padding: 0;
         }
@@ -27,9 +27,10 @@
             color: white;
             margin-left: 10px;
         }
+
     </style>
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100 ">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a href="<?= $router->url('home') ?>" class="navbar-brand">My blog</a>
         <ul class="navbar-nav">

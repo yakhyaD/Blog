@@ -16,11 +16,13 @@ $link = $router->url('admin_posts');
 <?php endif; ?>
 
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <th>ID</th>
         <th>Title</th>
-        <th>Action</th>
+        <th>
+            <a href="<?= $router->url('admin_post_new') ?>" class="btn btn-primary">New Article</a>
+        </th>
     </thead>
     <tbody>
     <?php foreach ($posts as $post): ?>
@@ -29,8 +31,9 @@ $link = $router->url('admin_posts');
             <td><?= $post->getName() ?></td>
             <td>
                 <a href="<?= $router->url('admin_post_edit', ['id' => $post->getID()]) ?>" class="btn btn-primary">Edit</a>
-                <form action="<?= $router->url('admin_post_delete', ['id' => $post->getID()]) ?>" method="POST" style="display: inline;">
-                    <button class="btn btn-danger" submit="return confirm('Confirm this suppression')">Delete</button>
+                <form action="<?= $router->url('admin_post_delete', ['id' => $post->getID()]) ?>" method="POST" style="display: inline;"
+                    onsubmit="return confirm('Confirm this suppression')">
+                    <button class="btn btn-danger">Delete</button>
                 </form>
             </td>
         </tr>

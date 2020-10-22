@@ -27,4 +27,26 @@ class CategoryTable extends Table {
             $PostByID[$category->getPostID()]->addCategory($category);
         }
     }
+
+    public function updateCategory(Category $category)
+    {
+        $this->update([
+            'name' => $category->getName(),
+            'slug' => $category->getSlug()
+        ], $category->getID());
+    }
+
+    public function insertCategory(Category $category): void
+    {
+        $id = $this->insert([
+            'name' => $category->getName(),
+            'slug' => $category->getSlug(),
+        ]);
+        $category->setID($id);
+    }
+
+    public function all(): array
+    {
+        return $this->QueryandFetchAll("SELECT * FROM {$this->table} ORDER BY id DESC");
+    }
 }

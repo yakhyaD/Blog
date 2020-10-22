@@ -22,7 +22,7 @@ class Post {
         return htmlentities($this->name); 
     }
 
-    public function getCreatedAt (): DateTime
+    public function getCreated (): DateTime
     {
         return new DateTime($this->created_at);
     }
@@ -78,7 +78,7 @@ class Post {
         $this->slug = htmlentities($slug);
         return $this;
     }
-    public function setCreatedAt(string $created_at)
+    public function setCreated(string $created_at)
     {
         $this->created_at = $created_at;
         return $this;
