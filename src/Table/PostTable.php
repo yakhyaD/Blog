@@ -9,14 +9,23 @@ class PostTable extends Table{
     protected $table = 'posts';
     protected $class = Post::class;
 
-    public function updatePost(Post $post)
+    public function updatePost(Post $post, array $categoriesIds)
     {
+        $this->pdo->beginTransaction();
         $this->update([
             'name' => $post->getName(),
             'slug' => $post->getSlug(),
             'content' => $post->getContent(),
             'created_at' => $post->getCreated()->format('Y-m-d H:m:s'),
         ], $post->getID());
+       
+        $this->pdo->exec("SET FOREIGN_KEY_CHECKS = 0 ");
+        $this->pdo->exec('DELETE FROM post_category WHERE post_id=' . $post->getID());
+        $query = $this->pdo->prepare("INSERT INTO post_category SET post_id= ?, category_id = ?");
+        foreach($categoriesIds as $categoryID){
+            $query->execute([$post->getID(), $categoryID]);
+        }
+        $this->pdo->commit();
     }
 
     public function insertPost(Post $post): void

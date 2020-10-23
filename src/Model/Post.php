@@ -70,7 +70,7 @@ class Post {
 
     public function setContent(string $content)
     {
-        $this->content = nl2br(htmlentities($content));
+        $this->content = $content;
         return $this;
     }
     public function setSlug(string $slug)
@@ -89,4 +89,18 @@ class Post {
         $this->id = $id;
         return $this;
     }
+
+    public function setCategories(array $categories)
+    {
+        $this->categories = $categories;
+    }
+
+    public function getCategoriesIds(): array
+    {
+        $ids = [];
+        foreach($this->getCategories() as $category){
+            $ids[] = $category->getID();
+        }
+        return $ids;
+    } 
 }

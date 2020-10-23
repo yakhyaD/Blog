@@ -7,20 +7,26 @@ use App\Table\PostTable;
 use App\Validator;
 use App\Validator\PostValidator;
 use App\Objet;
+use App\Table\CategoryTable;
+
+Auth::check();
 
 $pdo = Connection::getPDO();
-Auth::check();
 $postTable = new PostTable($pdo);
 $post = $postTable->find($params['id']);
+$categoryTable = new CategoryTable($pdo);
+$allCategories = $categoryTable->allCategories();
+$categoryTable->hydratePosts([$post]);
+
 
 $errors = [];
 $success = false;
-
 if(!empty($_POST)){
-    $table = new PostValidator($_POST, $postTable, $post->getID());
+    $table = new PostValidator($_POST, $postTable, $post->getID(), $allCategories);
     Objet::hydrate($post, $_POST, ['name', 'content', 'slug', 'created']);
     if($table->validate()){
-        $postTable->updatePost($post);
+        $postTable->updatePost($post, $_POST['categories_ids']);
+        $categoryTable->hydratePosts([$post]);
         $success = true;
     }
     else{

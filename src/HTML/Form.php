@@ -1,6 +1,7 @@
 <?php
 namespace App\HTML;
 
+use App\Model\Category;
 use App\Model\Post;
 
 class Form {
@@ -29,24 +30,46 @@ class Form {
         </div>
 HTML;
     }
+    public function select(string $key, string $label, array $options = []): string
+    {
+        $categoryOption = [];
+        $value = $this->getValue($key);
+        
+        foreach($options as $k => $v){
+            $selected = in_array($k, $value) ? " selected" : "";
+            $categoryOption[] = "<option value=\"$k\" {$selected} >$v</option>";
+        }
+        $inputClass = $this->getInputClass($key);
+        $invalidFeedback = $this->getInvalidFeedback($key);
+        $categoryOption = implode('', $categoryOption);
+        return <<<HTML
+        <div class="form-group">
+            <label for="field{$key}">{$label}</label>
+            <select type="text" id="field{$key}" class="{$inputClass}" name="{$key}[]" required multiple> {$categoryOption} </select>
+        </div>
+        {$invalidFeedback} 
+HTML;
+    }
 
     public function textarea(string $key, string $label)
     {
         $value = $this->getValue($key);
+        $inputClass = $this->getInputClass($key);
+        $invalidFeedback = $this->getInvalidFeedback($key);
         return <<<HTML
         <div class="form-group">
             <label for="field{$key}">{$label}</label>
-            <textarea id="field{$key}" name="{$key}" type="text" class="form-control ">{$value}</textarea>
+            <textarea id="field{$key}" name="{$key}" type="text" class="{$inputClass}">{$value}</textarea>
         </div>
 HTML;
     }
 
-    private function getValue(string $key): ?string
+    private function getValue(string $key)
     {
         if(is_array($this->data)){
             return $this->data[$key] ?? null;
         }
-        $method = 'get' . ucfirst($key);
+        $method = 'get' . str_replace(' ', '', ucfirst(str_replace('_', ' ', $key)));
         $value = $this->data->$method();
         if($value instanceof \DateTimeInterface){
             return $value->format('Y-m-d H:i:s');

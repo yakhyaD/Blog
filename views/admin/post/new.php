@@ -8,6 +8,7 @@ use App\Validator;
 use App\Validator\PostValidator;
 use App\Objet;
 use App\Model\Post;
+use App\Table\CategoryTable;
 
 
 Auth::check();
@@ -15,6 +16,8 @@ Auth::check();
 $errors = [];
 $success = false;
 $post = new Post();
+$pdo = Connection::getPDO();
+$allCategories = (new CategoryTable($pdo))->allCategories();
 
 if(!empty($_POST)){    
     $pdo = Connection::getPDO();

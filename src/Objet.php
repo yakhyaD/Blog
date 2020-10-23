@@ -4,15 +4,11 @@ namespace App;
 
 class Objet {
 
-    public static function hydrate( $table, $data, $fields)
-    {
-        if(!is_array($fields)){
-            $set = 'set' . ucfirst($fields);
-            $table->$set($data[$fields]);
-        }
+    public static function hydrate( $object, array $data, array $fields): void
+    {   
         foreach($fields as $field){
-            $set = 'set' . ucfirst($field);
-            $table->$set($data[$field]);
+        $method = 'set' . str_replace(' ', '', ucfirst(str_replace('_', ' ', $field)));
+        $object->$method($data[$field]);
         }
     }
 }
