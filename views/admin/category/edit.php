@@ -9,8 +9,9 @@ use App\Objet;
 use App\Table\CategoryTable;
 use App\Validator\CategoryValidator;
 
-$pdo = Connection::getPDO();
 Auth::check();
+
+$pdo = Connection::getPDO();
 $categoryTable = new CategoryTable($pdo);
 $item = $categoryTable->find($params['id']);
 

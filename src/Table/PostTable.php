@@ -19,24 +19,31 @@ class PostTable extends Table{
             'created_at' => $post->getCreated()->format('Y-m-d H:m:s'),
         ], $post->getID());
        
-        $this->pdo->exec("SET FOREIGN_KEY_CHECKS = 0 ");
-        $this->pdo->exec('DELETE FROM post_category WHERE post_id=' . $post->getID());
-        $query = $this->pdo->prepare("INSERT INTO post_category SET post_id= ?, category_id = ?");
-        foreach($categoriesIds as $categoryID){
-            $query->execute([$post->getID(), $categoryID]);
-        }
-        $this->pdo->commit();
+        $this->attachCategories($post->getID(),$categoriesIds);
     }
 
-    public function insertPost(Post $post): void
+    public function insertPost(Post $post, array $categoriesIds): void
     {
+        $this->pdo->beginTransaction();
         $id = $this->insert([
             'name' => $post->getName(),
             'slug' => $post->getSlug(),
             'content' => $post->getContent(),
             'created_at' => $post->getCreated()->format('Y-m-d H:i:s')
         ]);
+        $this->attachCategories($post->getID(),$categoriesIds);
         $post->setID($id);
+    }
+
+    public function attachCategories(int $id, array $categoriesIds)
+    {
+        $this->pdo->exec("SET FOREIGN_KEY_CHECKS = 0 ");
+        $this->pdo->exec('DELETE FROM post_category WHERE post_id=' . $id);
+        $query = $this->pdo->prepare("INSERT INTO post_category SET post_id= ?, category_id = ?");
+        foreach($categoriesIds as $categoryID){
+            $query->execute([$id, $categoryID]);
+        }
+        $this->pdo->commit();
     }
     
 

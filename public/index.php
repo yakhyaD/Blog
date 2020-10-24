@@ -26,11 +26,16 @@ $router
     ->get('/', 'post/index', 'home')
     ->get('/blog/category/[*:slug]-[i:id]', 'category/show', 'category')
     ->get('/blog/[*:slug]-[i:id]', 'post/show', 'post')
+    ->match('/login', 'auth/login', 'login')
+    ->match('/logout', 'auth/logout', 'logout')
+
+
     // Gestion des articles
     ->get('/admin', 'admin/post/index', 'admin_posts')
     ->match('/admin/post/[i:id]', 'admin/post/edit', 'admin_post_edit')
     ->post('/admin/post/[i:id]/delete', 'admin/post/delete', 'admin_post_delete') 
     ->match('/admin/post/new', 'admin/post/new', 'admin_post_new')
+
     // Gestion des categories
     ->get('/admin/categories', 'admin/category/index', 'admin_categories')
     ->match('/admin/category/[i:id]', 'admin/category/edit', 'admin_category_edit')

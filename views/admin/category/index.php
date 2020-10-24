@@ -1,7 +1,11 @@
 <?php
+
+use App\Auth;
 use App\Connection;
 use App\Table\CategoryTable;
 use App\Table\PostTable;
+
+Auth::check();
 
 $title = 'Administatration';
 $pdo = Connection::getPDO();

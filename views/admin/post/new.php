@@ -17,7 +17,9 @@ $errors = [];
 $success = false;
 $post = new Post();
 $pdo = Connection::getPDO();
-$allCategories = (new CategoryTable($pdo))->allCategories();
+$categoryTable = new CategoryTable($pdo);
+$allCategories = $categoryTable->allCategories();
+
 
 if(!empty($_POST)){    
     $pdo = Connection::getPDO();
@@ -26,7 +28,7 @@ if(!empty($_POST)){
     $table = new PostValidator($_POST, $postTable, $post->getID());
     Objet::hydrate($post, $_POST, ['name', 'content', 'slug', 'created']);
     if($table->validate()){
-        $postTable->insertPost($post);
+        $postTable->insertPost($post, $allCategories);
         header('location:' . $router->url('admin_posts',['id' => $post->getID()]) . '?success=1');
         exit();
     }

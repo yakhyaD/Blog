@@ -25,7 +25,10 @@
         }
         .nav-link {
             color: white;
-            margin-left: 10px;
+            margin: 0 10px ;
+        }
+        .invalid-feedback {
+            color: red;
         }
 
     </style>
@@ -39,6 +42,11 @@
             </li>
             <li class="nav-item">
                 <a href="<?= $router->url('admin_categories') ?>" class="nav-link">Categories</a>
+            </li>
+            <li class="nav-item">
+                <form action="<?= $router->url('logout') ?>" method="POST">
+                    <button type="submit" class="nav-link" style="display:inline; background: transparent; border: none">Logout</button>
+                </form>
             </li>
         </ul>
     </nav>

@@ -32,14 +32,6 @@
 <body class="d-flex flex-column h-100">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a href="<?= $router->url('home') ?>" class="navbar-brand">My blog</a>
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a href="<?= $router->url('admin_posts') ?>" class="nav-link">Articles</a>
-            </li>
-            <li class="nav-item">
-                <a href="<?= $router->url('admin_categories') ?>" class="nav-link">Categories</a>
-            </li>
-        </ul>
     </nav>
     <div class="container my-4">
         <?= $content ?>

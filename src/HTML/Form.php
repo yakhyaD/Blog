@@ -20,12 +20,12 @@ class Form {
         $value = $this->getValue($key);
         $inputClass = $this->getInputClass($key);
         $invalidFeedback = $this->getInvalidFeedback($key);
-
+        $type = $key === 'password' ? 'password' : "text";
 
         return <<<HTML
         <div class="form-group">
             <label for="field{$key}">{$label}</label>
-            <input type="text" id="field{$key}" name="{$key}" class="{$inputClass}" value= "{$value}"/>
+            <input type="{$type}" id="field{$key}" name="{$key}" class="{$inputClass}" value= "{$value}"/>
             {$invalidFeedback}
         </div>
 HTML;
@@ -34,7 +34,7 @@ HTML;
     {
         $categoryOption = [];
         $value = $this->getValue($key);
-        
+
         foreach($options as $k => $v){
             $selected = in_array($k, $value) ? " selected" : "";
             $categoryOption[] = "<option value=\"$k\" {$selected} >$v</option>";
@@ -69,7 +69,7 @@ HTML;
         if(is_array($this->data)){
             return $this->data[$key] ?? null;
         }
-        $method = 'get' . str_replace(' ', '', ucfirst(str_replace('_', ' ', $key)));
+        $method = 'get' . str_replace(' ', '', ucfirst(str_replace('_', '', $key)));
         $value = $this->data->$method();
         if($value instanceof \DateTimeInterface){
             return $value->format('Y-m-d H:i:s');
@@ -90,10 +90,16 @@ HTML;
     {
         $invalidFeedback = '';
         if(isset($this->errors[$key])){
-            $invalidFeedback = '<div class="invalid-feedback">' . implode('<br>', $this->errors[$key]) . '</div>';
+            if(is_array($this->errors[$key])){
+                $error = implode('<br>', $this->errors[$key]);
+            }
+            else {
+                $error = $this->errors[$key];
+            }
+            return $invalidFeedback = '<div class="invalid-feedback">' . $error . '</div>';
         }
 
-        return $invalidFeedback;
+        return '';
     }
 
 }

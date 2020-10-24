@@ -20,7 +20,7 @@ $title = "Mon blog"
 <h1>Mon blog</h1>
 <div class="row">
     <?php foreach ($posts as $post): ?>
-        <div class="col-md-3">
+        <div class="col-lg-3">
             <?php require 'card.php' ?>
         </div>
     <?php endforeach ?>
